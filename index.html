@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreeProxies.net - Free Public Proxy List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg:#05070d;
+            --card:#0d111b;
+            --border:#1d2433;
+            --text:#e6edf3;
+            --muted:#8b949e;
+            --accent:#7c3aed;
+            --accent2:#00d4ff;
+            --success:#00ff9d;
+        }
+
+        body{
+            background:
+                radial-gradient(circle at top left, rgba(124,58,237,.18), transparent 30%),
+                radial-gradient(circle at top right, rgba(0,212,255,.10), transparent 25%),
+                linear-gradient(180deg, #04050a 0%, #070b14 100%);
+            color: var(--text);
+            min-height: 100vh;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .navbar{
+            background: rgba(5,7,13,.85);
+            backdrop-filter: blur(10px);
+            border-bottom:1px solid rgba(255,255,255,.05);
+        }
+
+        .brand{
+            font-size:1.6rem;
+            font-weight:800;
+            letter-spacing:1px;
+            color:white;
+        }
+
+        .brand span{
+            color:var(--accent2);
+        }
+
+        .hero{
+            padding:90px 0 50px;
+            text-align:center;
+        }
+
+        .hero h1{
+            font-size:3rem;
+            font-weight:800;
+            margin-bottom:15px;
+        }
+
+        .hero p{
+            color:var(--muted);
+            max-width:800px;
+            margin:auto;
+            font-size:1.05rem;
+        }
+
+        .stats{
+            margin-top:35px;
+        }
+
+        .stat-card{
+            background: rgba(13,17,27,.9);
+            border:1px solid rgba(255,255,255,.06);
+            border-radius:18px;
+            padding:25px;
+            box-shadow:0 0 30px rgba(0,0,0,.35);
+        }
+
+        .stat-number{
+            font-size:2rem;
+            font-weight:800;
+            color:var(--accent2);
+        }
+
+        .proxy-wrapper{
+            background: rgba(13,17,27,.85);
+            border:1px solid rgba(255,255,255,.06);
+            border-radius:22px;
+            padding:25px;
+            margin-bottom:60px;
+            box-shadow:
+                0 0 40px rgba(0,0,0,.35),
+                0 0 15px rgba(124,58,237,.08);
+        }
+
+        .form-control,
+        .form-select{
+            background:#0b1220;
+            border:1px solid var(--border);
+            color:white;
+        }
+
+        .form-control:focus,
+        .form-select:focus{
+            background:#0b1220;
+            color:white;
+            border-color:var(--accent);
+            box-shadow:none;
+        }
+
+        .table{
+            color:white;
+        }
+
+        .table thead{
+            background:#101826;
+        }
+
+        .table tbody tr{
+            border-color: rgba(255,255,255,.05);
+            transition:.2s;
+        }
+
+        .table tbody tr:hover{
+            background: rgba(124,58,237,.08);
+        }
+
+        .badge-protocol{
+            background: rgba(124,58,237,.18);
+            color:#c9b3ff;
+            border:1px solid rgba(124,58,237,.35);
+        }
+
+        .badge-anon{
+            background: rgba(0,212,255,.12);
+            color:#8be9ff;
+            border:1px solid rgba(0,212,255,.25);
+        }
+
+        .copy-btn{
+            border:none;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color:white;
+            border-radius:10px;
+            padding:7px 14px;
+            font-size:.85rem;
+            font-weight:600;
+        }
+
+        .copy-btn:hover{
+            opacity:.9;
+        }
+
+        .loading{
+            padding:60px 0;
+            text-align:center;
+            color:var(--muted);
+        }
+
+        .footer{
+            color:var(--muted);
+            text-align:center;
+            padding:40px 0;
+            font-size:.9rem;
+        }
+
+        .glow{
+            text-shadow:
+                0 0 12px rgba(0,212,255,.4),
+                0 0 25px rgba(124,58,237,.4);
+        }
+
+        .small-muted{
+            color:var(--muted);
+            font-size:.85rem;
+        }
+
+        @media(max-width:768px){
+            .hero h1{
+                font-size:2.2rem;
+            }
+
+            .table{
+                font-size:.82rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <div class="brand">
+            FREE<span>PROXIES</span>.NET
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <h1 class="glow">
+            Free Public Proxy List
+        </h1>
+
+        <p>
+            High-speed SOCKS4, SOCKS5 and HTTP proxies updated in real-time.
+            Anonymous, transparent and elite proxies available for free.
+        </p>
+
+        <div class="row stats justify-content-center g-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalProxies">0</div>
+                    <div class="small-muted">Total Proxies</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number" id="socksCount">0</div>
+                    <div class="small-muted">SOCKS Proxies</div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number" id="httpsCount">0</div>
+                    <div class="small-muted">HTTPS Enabled</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="proxy-wrapper">
+
+        <div class="row mb-4 g-3">
+            <div class="col-md-6">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control"
+                    placeholder="Search IP, country, city..."
+                />
+            </div>
+
+            <div class="col-md-3">
+                <select id="protocolFilter" class="form-select">
+                    <option value="">All Protocols</option>
+                    <option value="http">HTTP</option>
+                    <option value="https">HTTPS</option>
+                    <option value="socks4">SOCKS4</option>
+                    <option value="socks5">SOCKS5</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <button class="btn btn-outline-light w-100" onclick="loadProxies()">
+                    Refresh Proxies
+                </button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading proxies...
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Port</th>
+                        <th>Protocol</th>
+                        <th>Anonymity</th>
+                        <th>Country</th>
+                        <th>HTTPS</th>
+                        <th>Updated</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="proxyTableBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    © 2026 FreeProxies.net — Free public proxies updated live.
+</div>
+
+<script>
+    // =========================
+    // CONFIG
+    // =========================
+
+    const API_URL = "https://listjobs.pt/api/proxies";
+
+    let allProxies = [];
+
+    // =========================
+    // LOAD PROXIES
+    // =========================
+
+    async function loadProxies() {
+        try {
+            document.getElementById("loading").style.display = "block";
+
+            const response = await fetch(API_URL);
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch proxies");
+            }
+
+            const data = await response.json();
+
+            allProxies = data || [];
+
+            updateStats(allProxies);
+            renderTable(allProxies);
+
+        } catch (err) {
+            console.error(err);
+
+            document.getElementById("proxyTableBody").innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-danger py-5">
+                        Failed to load proxies.
+                    </td>
+                </tr>
+            `;
+        } finally {
+            document.getElementById("loading").style.display = "none";
+        }
+    }
+
+    // =========================
+    // RENDER TABLE
+    // =========================
+
+    function renderTable(proxies) {
+
+        const tbody = document.getElementById("proxyTableBody");
+
+        if (!proxies.length) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center py-5">
+                        No proxies found.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = proxies.map(proxy => `
+            <tr>
+                <td>${proxy.ip}</td>
+
+                <td>${proxy.port}</td>
+
+                <td>
+                    <span class="badge badge-protocol">
+                        ${proxy.protocol.toUpperCase()}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="badge badge-anon">
+                        ${proxy.anonymity}
+                    </span>
+                </td>
+
+                <td>${proxy.country}</td>
+
+                <td>
+                    ${proxy.https
+                        ? '<span class="text-success">YES</span>'
+                        : '<span class="text-secondary">NO</span>'
+                    }
+                </td>
+
+                <td>
+                    ${formatDate(proxy.updated_at)}
+                </td>
+
+                <td>
+                    <button
+                        class="copy-btn"
+                        onclick="copyProxy('${proxy.proxy}')"
+                    >
+                        Copy
+                    </button>
+                </td>
+            </tr>
+        `).join("");
+    }
+
+    // =========================
+    // STATS
+    // =========================
+
+    function updateStats(proxies) {
+
+        document.getElementById("totalProxies").innerText =
+            proxies.length;
+
+        document.getElementById("socksCount").innerText =
+            proxies.filter(p =>
+                p.protocol.includes("socks")
+            ).length;
+
+        document.getElementById("httpsCount").innerText =
+            proxies.filter(p => p.https).length;
+    }
+
+    // =========================
+    // SEARCH + FILTER
+    // =========================
+
+    function applyFilters() {
+
+        const search =
+            document.getElementById("searchInput")
+            .value
+            .toLowerCase();
+
+        const protocol =
+            document.getElementById("protocolFilter")
+            .value
+            .toLowerCase();
+
+        const filtered = allProxies.filter(proxy => {
+
+            const matchesSearch =
+                proxy.ip.toLowerCase().includes(search) ||
+                proxy.country.toLowerCase().includes(search) ||
+                proxy.city.toLowerCase().includes(search);
+
+            const matchesProtocol =
+                !protocol ||
+                proxy.protocol.toLowerCase() === protocol;
+
+            return matchesSearch && matchesProtocol;
+        });
+
+        renderTable(filtered);
+    }
+
+    // =========================
+    // COPY
+    // =========================
+
+    async function copyProxy(proxy) {
+
+        try{
+            await navigator.clipboard.writeText(proxy);
+
+            alert("Proxy copied!");
+        }catch(err){
+            console.error(err);
+        }
+    }
+
+    // =========================
+    // DATE FORMAT
+    // =========================
+
+    function formatDate(dateString){
+
+        const date = new Date(dateString);
+
+        return date.toLocaleString();
+    }
+
+    // =========================
+    // EVENTS
+    // =========================
+
+    document
+        .getElementById("searchInput")
+        .addEventListener("input", applyFilters);
+
+    document
+        .getElementById("protocolFilter")
+        .addEventListener("change", applyFilters);
+
+    // =========================
+    // INIT
+    // =========================
+
+    loadProxies();
+
+    // Auto refresh every 60s
+    setInterval(loadProxies, 60000);
+
+</script>
+
+</body>
+</html>
